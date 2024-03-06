@@ -1,0 +1,14 @@
+
+Flask  # For the web framework to handle HTTP requests
+Flask-SQLAlchemy  # For ORM support with Flask
+Flask-Migrate  # For database migrations
+Flask-Cors  # To handle Cross-Origin Resource Sharing (CORS) for AJAX requests
+requests  # To make HTTP requests to external APIs or services
+SQLAlchemy  # For database management and ORM
+alembic  # For database migrations, used alongside Flask-Migrate
+psycopg2-binary  # PostgreSQL database adapter for Python, assuming PostgreSQL is used
+pandas  # For data manipulation and analysis, might be useful for processing query results
+gunicorn  # WSGI HTTP Server for UNIX, for deploying the Flask app
+eventlet  # For concurrent networking library, can be useful for long-polling/WebSocket in Flask
+python-dotenv  # To manage environment variables for development and production
+openai  # For interacting with OpenAI's API, including ChatGPT
