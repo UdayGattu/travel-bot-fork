@@ -1,41 +1,56 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
+# from sqlalchemy import Boolean,Column, Integer,String
+# from database import Base
+
+# class User(Base):
+#     __tablename__ = 'users'
+#     id = Column(Integer,primary_key=True,index=True)
+#     username = Column(String(50),unique=True)
+
+# class Post(Base):
+#     __tablename__='posts'
+#     id =Column(Integer,primary_key=True,index=True)
+#     title = Column(String(50))
+#     content = Column(String(100))
+#     user_id = Column(Integer)
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
+from database import Base
 
-Base = declarative_base()
-
-class Destination(Base):
-    __tablename__ = 'destinations'
-
+class City(Base):
+    __tablename__ = "cities"
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(255), unique=True, nullable=False)
-    country = Column(String(255), nullable=False)
-    description = Column(String(1024), nullable=True)
+    name = Column(String(255), index=True)
+    country = Column(String(255))
+    timezone = Column(String(255))
+    airports = relationship("Airport", back_populates="city")  # Relationship to Airports
 
-    # Relationship to TravelPackages
-    packages = relationship("TravelPackage", back_populates="destination")
+class Airport(Base):
+    __tablename__ = "airports"
+    id = Column(Integer, primary_key=True, index=True)
+    city_id = Column(Integer, ForeignKey('cities.id'))
+    name = Column(String(255))
+    iata_code = Column(String(255), unique=True)
+    city = relationship("City", back_populates="airports")  # Relationship back to City
+
+class Flight(Base):
+    __tablename__ = "flights"
+    id = Column(Integer, primary_key=True, index=True)
+    departure_airport_id = Column(Integer, ForeignKey('airports.id'))
+    arrival_airport_id = Column(Integer, ForeignKey('airports.id'))
+    flight_duration = Column(Float)  # Flight duration in hours or minutes
+    operating_airlines = Column(String(255))
+    departure_airport = relationship("Airport", foreign_keys=[departure_airport_id])
+    arrival_airport = relationship("Airport", foreign_keys=[arrival_airport_id])
 
 class TravelPackage(Base):
-    __tablename__ = 'travel_packages'
-
+    __tablename__ = "travel_packages"
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(255), nullable=False)
-    cost = Column(Float, nullable=False)
-    duration_days = Column(Integer, nullable=False)
-    destination_id = Column(Integer, ForeignKey('destinations.id'))
-
-    # Relationship to Destination
-    destination = relationship("Destination", back_populates="packages")
-    # Relationship to PackageDetails
-    details = relationship("PackageDetail", back_populates="package")
-
-class PackageDetail(Base):
-    __tablename__ = 'package_details'
-
-    id = Column(Integer, primary_key=True, index=True)
-    package_id = Column(Integer, ForeignKey('travel_packages.id'))
-    detail_type = Column(String(255), nullable=False) # e.g., inclusion, exclusion, etc.
-    description = Column(String(1024), nullable=False)
-
-    # Relationship to TravelPackage
-    package = relationship("TravelPackage", back_populates="details")
+    name = Column(String(255))
+    description = Column(String(400))
+    cost = Column(Float)
+    origin_city_id = Column(Integer, ForeignKey('cities.id'))
+    destination_city_id = Column(Integer, ForeignKey('cities.id'))
+    valid_from = Column(DateTime)
+    valid_to = Column(DateTime)
+    origin_city = relationship("City", foreign_keys=[origin_city_id])
+    destination_city = relationship("City", foreign_keys=[destination_city_id])
