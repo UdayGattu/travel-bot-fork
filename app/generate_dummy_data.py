@@ -110,6 +110,7 @@ def generate_travel_package_description():
     
     final_description = "Each package offers a unique blend of attractions and experiences, ensuring memorable moments."
     
+    
     # Concatenate base description with the final part, ensuring it doesn't exceed 255 characters
     if len(base_description) + len(final_description) <= 300:
         description = base_description + final_description
