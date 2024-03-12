@@ -1,6 +1,9 @@
 fastapi
 uvicorn
+mysqlclient
 sqlalchemy
 python-dotenv
-mysqlclient
 pydantic
+pymysql
+jinja2
+faker
