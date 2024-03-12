@@ -1,28 +1,17 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 from dotenv import load_dotenv
 import os
-
-# Load environment variables from .env file
 load_dotenv()
-
-# Construct the database URL from environment variables
-# DATABASE_URL = (
-#     f"mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}"
-#     f"{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
-# )
-# DATABASE_URL = 'mysql+pymysql://root:Uday123@@127.0.0.1:3306/mydatabase'
 DATABASE_URL = (
     f"mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}"
-    f"@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
+    f"@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
 )
+# URL_DATABASE ='mysql+pymysql://root:root1234@localhost:3306/mydatabase'
 
 engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# If you're using the declarative base model pattern
-from models import Base  # Import the Base from models.py
-Base.metadata.create_all(bind=engine)
+Sessionlocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-
-
+Base = declarative_base()
