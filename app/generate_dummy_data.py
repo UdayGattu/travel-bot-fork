@@ -41,7 +41,7 @@ def generate_cities(db: Session, count: int = 50):
         
         # Generate a city object with the selected names and a random timezone
         city = City(
-            name=city_name,
+            Cityname=city_name,
             country=country_name,
             timezone=fake.timezone()
         )
@@ -54,7 +54,7 @@ def generate_airports(db: Session, count: int = 50):
     for _ in range(count):
         airport = Airport(
             city_id=random.choice(cities).id,
-            name=f"{fake.city()} International Airport",
+            Airportname=f"{fake.city()} International Airport",
             iata_code=fake.bothify(text='???')  # Generates a 3-letter code
         )
         db.add(airport)
@@ -74,8 +74,8 @@ def generate_flights(db: Session, count: int = 180):
 
 def generate_travel_package_name(db: Session):
     # Fetch all city names from the database
-    cities = db.query(City.name).all()
-    city_names = [city.name for city in cities]  # Extract city names from the query results
+    cities = db.query(City.Cityname).all()
+    city_names = [city.Cityname for city in cities]  # Extract city names from the query results
     
     if not city_names:
         return "No destinations available"  # Fallback in case no cities are found
@@ -129,7 +129,7 @@ def generate_travel_packages(db: Session, count: int = 40):
         return
     for _ in range(count):
         travel_package = TravelPackage(
-            name=generate_travel_package_name(db),
+            packagename=generate_travel_package_name(db),
             description=generate_travel_package_description(),
             cost=fake.random_number(digits=3),
             origin_city_id=random.choice(cities).id,
