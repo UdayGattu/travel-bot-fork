@@ -19,7 +19,7 @@ from database import Base
 class City(Base):
     __tablename__ = "cities"
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(255), index=True)
+    Cityname = Column(String(255), index=True)
     country = Column(String(255))
     timezone = Column(String(255))
     airports = relationship("Airport", back_populates="city")  # Relationship to Airports
@@ -28,7 +28,7 @@ class Airport(Base):
     __tablename__ = "airports"
     id = Column(Integer, primary_key=True, index=True)
     city_id = Column(Integer, ForeignKey('cities.id'))
-    name = Column(String(255))
+    Airportname = Column(String(255))
     iata_code = Column(String(255), unique=True)
     city = relationship("City", back_populates="airports")  # Relationship back to City
 
@@ -45,7 +45,7 @@ class Flight(Base):
 class TravelPackage(Base):
     __tablename__ = "travel_packages"
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(255))
+    packagename = Column(String(255))
     description = Column(String(400))
     cost = Column(Float)
     origin_city_id = Column(Integer, ForeignKey('cities.id'))
